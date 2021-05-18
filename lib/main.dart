@@ -57,13 +57,13 @@ class TransferForms extends StatelessWidget {
               keyboardType: TextInputType.number,
             ),
           ),
-          RaisedButton(
+          ElevatedButton(
             onPressed: () {
               final double value = double.tryParse(_value.text);
               final int accountNUmber = int.tryParse(_accountNumber.text);
 
-              if (vlaue != null && accountNUmber != null) {
-                Transfer(value., accountNUmber)
+              if (value != null && accountNUmber != null) {
+                Transfer(value, accountNUmber);
               }
             },
             child: Text("Confirmar"),
