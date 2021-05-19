@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: TransferForms(),
+      home: Home(),
     );
   }
 }
@@ -31,44 +31,58 @@ class TransferForms extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
+          Editor(
               controller: _accountNumber,
-              style: TextStyle(
-                fontSize: 24,
-              ),
-              decoration: InputDecoration(
-                  labelText: "Numero da conta", hintText: "0000"),
-              keyboardType: TextInputType.number,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextField(
+              rotulo: "Numero da conta",
+              tip: "000"),
+          Editor(
               controller: _value,
-              style: TextStyle(
-                fontSize: 24,
-              ),
-              decoration: InputDecoration(
-                  icon: Icon(Icons.monetization_on),
-                  labelText: "Valor",
-                  hintText: "00.00"),
-              keyboardType: TextInputType.number,
-            ),
-          ),
+              rotulo: "Valor",
+              tip: "00.00",
+              icon: Icons.monetization_on),
           ElevatedButton(
-            onPressed: () {
-              final double value = double.tryParse(_value.text);
-              final int accountNUmber = int.tryParse(_accountNumber.text);
-
-              if (value != null && accountNUmber != null) {
-                Transfer(value, accountNUmber);
-              }
-            },
+            onPressed: () => _createTransfer(context),
             child: Text("Confirmar"),
           )
         ],
+      ),
+    );
+  }
+
+  void _createTransfer(BuildContext context) {
+    final double value = double.tryParse(_value.text);
+    final int accountNUmber = int.tryParse(_accountNumber.text);
+
+    if (value != null && accountNUmber != null) {
+      final Transfer finalTransfer = Transfer(value, accountNUmber);
+      Navigator.pop(context, finalTransfer);
+    }
+  }
+}
+
+class Editor extends StatelessWidget {
+  final TextEditingController controller;
+  final String rotulo;
+  final String tip;
+  final IconData icon;
+
+  Editor({this.controller, this.rotulo, this.tip, this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: TextField(
+        controller: controller,
+        style: TextStyle(
+          fontSize: 24,
+        ),
+        decoration: InputDecoration(
+          labelText: rotulo,
+          hintText: tip,
+          icon: icon != null ? Icon(icon) : null,
+        ),
+        keyboardType: TextInputType.number,
       ),
     );
   }
@@ -84,6 +98,13 @@ class Home extends StatelessWidget {
       appBar: AppBar(title: Text("Tranferencias")),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
+        onPressed: () {
+          final Future<Transfer> future =
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return TransferForms();
+          }));
+          future.then((incomeTransfer) => {});
+        },
       ),
     );
   }
