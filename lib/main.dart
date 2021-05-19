@@ -12,7 +12,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primaryColor: Colors.green[900],
+        accentColor: Colors.blueAccent[700],
+        buttonTheme: ButtonThemeData(
+          buttonColor: Colors.blueAccent[700],
+          textTheme: ButtonTextTheme.primary
+        )
       ),
       home: Home(),
     );
@@ -27,11 +32,9 @@ class TransferForms extends StatefulWidget {
   State<StatefulWidget> createState() {
     return _StateTransferForms();
   }
-
 }
 
 class _StateTransferForms extends State<TransferForms> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +67,8 @@ class _StateTransferForms extends State<TransferForms> {
 
   void _createTransfer(BuildContext context) {
     final double value = double.tryParse(widget._value.text.toString());
-    final int accountNUmber = int.tryParse(widget._accountNumber.text.toString());
+    final int accountNUmber =
+        int.tryParse(widget._accountNumber.text.toString());
     if (value != null && accountNUmber != null) {
       final Transfer finalTransfer = Transfer(value, accountNUmber);
       Navigator.pop(context, finalTransfer);
@@ -111,8 +115,8 @@ class Home extends StatefulWidget {
 
 class StateTransferList extends State<Home> {
   @override
-  Widget build(BuildContext context) {\\
-    return Scaffold(\\
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: ListView.builder(
         itemCount: widget._transferList.length,
         itemBuilder: (context, index) {
@@ -125,14 +129,13 @@ class StateTransferList extends State<Home> {
         child: Icon(Icons.add),
         onPressed: () {
           final Future<Transfer> future =
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
             return TransferForms();
           }));
           future.then((incomeTransfer) {
             if (incomeTransfer != null) {
               setState(() {
                 widget._transferList.add(incomeTransfer);
-                widget._transferList.length;
               });
             }
           });
