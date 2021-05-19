@@ -5,6 +5,8 @@ import 'package:bytebank/screens/transfer_forms.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+const _appBarTitle = "Tranferencias";
+
 class Home extends StatefulWidget {
   final List<Transfer> _transferList = [];
 
@@ -25,7 +27,7 @@ class StateTransferList extends State<Home> {
           return TransferItem(transfer);
         },
       ),
-      appBar: AppBar(title: Text("Tranferencias")),
+      appBar: AppBar(title: Text(_appBarTitle)),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {

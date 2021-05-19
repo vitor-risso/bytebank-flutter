@@ -3,6 +3,8 @@ import 'package:bytebank/models/transfer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+const _appBarTitle = "Criando transferencia";
+
 class TransferForms extends StatefulWidget {
   final TextEditingController _value = TextEditingController();
   final TextEditingController _accountNumber = TextEditingController();
@@ -18,7 +20,7 @@ class _StateTransferForms extends State<TransferForms> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Criando transferencia"),
+        title: Text(_appBarTitle),
       ),
       body: SingleChildScrollView(
         child: Column(
