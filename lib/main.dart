@@ -89,18 +89,24 @@ class Editor extends StatelessWidget {
 }
 
 class Home extends StatelessWidget {
+  final List<Transfer> _transferList = List<Transfer>.empty();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [TransferItem(Transfer(1.23, 32123))],
+      body: ListView.builder(
+        itemBuilder: (context, indice) {
+          final transfer = _transferList[indice];
+          return TransferItem(transfer);
+        },
+        itemCount: _transferList.length,
       ),
       appBar: AppBar(title: Text("Tranferencias")),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
           final Future<Transfer> future =
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
             return TransferForms();
           }));
           future.then((incomeTransfer) => {});
