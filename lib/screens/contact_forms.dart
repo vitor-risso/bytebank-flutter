@@ -1,3 +1,4 @@
+import 'package:bytebank/database/DAO/contact_dao.dart';
 import 'package:bytebank/database/app_database.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/contacts_list.dart';
@@ -9,6 +10,7 @@ const _appBarTitle = "New contact";
 class TransferForms extends StatefulWidget {
   final TextEditingController _name = TextEditingController();
   final TextEditingController _accountNumber = TextEditingController();
+  final ContactDAO _dao = ContactDAO();
 
   @override
   State<StatefulWidget> createState() {
@@ -57,7 +59,7 @@ class _StateTransferForms extends State<TransferForms> {
                   width: double.maxFinite,
                   child: ElevatedButton(
                     onPressed: () {
-                      _createAccount(context);
+                      _createAccount(context, widget._dao);
                     },
                     child: Text("Create"),
                   ),
@@ -70,13 +72,13 @@ class _StateTransferForms extends State<TransferForms> {
     );
   }
 
-  void _createAccount(BuildContext context) {
+  void _createAccount(BuildContext context, ContactDAO dao ) {
     final String name = widget._name.text.toString();
     final int accountNUmber =
     int.tryParse(widget._accountNumber.text.toString());
     if (name != null && accountNUmber != null) {
       final Contact finalContact = Contact(name, accountNUmber);
-      save(finalContact).then((value) =>
+      dao.save(finalContact).then((value) =>
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return ContactsList();
           })));
