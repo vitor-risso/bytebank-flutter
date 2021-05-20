@@ -8,30 +8,49 @@ import 'package:flutter/material.dart';
 const _appBarTitle = "Contacts";
 
 class ContactsList extends StatelessWidget {
-  final List<Contact> _contactList = [];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
+      body: FutureBuilder<List<Contact>>(
+        initialData: [],
         future: findAll(),
         builder: (context, snapshot) {
-          final List<Contact> contacts = snapshot.data;
-          return ListView.builder(
-            itemCount: contacts.length,
-            itemBuilder: (context, index) {
-              final contact = contacts[index];
-              return ContactItem(contact);
-            },
-          );
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              break;
+            case ConnectionState.waiting:
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    Text("Carregando")
+                  ],
+                ),
+              );
+              break;
+            case ConnectionState.active:
+              break;
+            case ConnectionState.done:
+              final List<Contact> contacts = snapshot.data;
+              return ListView.builder(
+                itemCount: contacts.length,
+                itemBuilder: (context, index) {
+                  final contact = contacts[index];
+                  return ContactItem(contact);
+                },
+              );
+              break;
+          }
+          return null;
         },
       ),
       appBar: AppBar(title: Text(_appBarTitle)),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          final Future<Contact> future =
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
             return TransferForms();
           }));
         },
