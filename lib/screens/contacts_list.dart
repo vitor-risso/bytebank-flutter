@@ -34,10 +34,10 @@ class StateContactList extends State<ContactsList> {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
             return TransferForms();
           }));
-          future.then((incomeTransfer) {
-            if (incomeTransfer != null) {
+          future.then((newContact) {
+            if (newContact != null) {
               setState(() {
-                widget._contactList.add(incomeTransfer);
+                widget._contactList.add(newContact);
               });
             }
           });
