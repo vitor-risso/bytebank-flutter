@@ -75,8 +75,7 @@ class _StateTransferForms extends State<TransferForms> {
         int.tryParse(widget._accountNumber.text.toString());
     if (name != null && accountNUmber != null) {
       final Contact finalContact = Contact(name, accountNUmber);
-      save(finalContact);
-      Navigator.pop(context);
+      save(finalContact).then((value) => Navigator.pop(context));
     }
   }
 }
