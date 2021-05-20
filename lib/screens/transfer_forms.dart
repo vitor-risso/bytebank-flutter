@@ -1,5 +1,5 @@
 import 'package:bytebank/components/editor.dart';
-import 'package:bytebank/models/transfer.dart';
+import 'package:bytebank/models/contact.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -51,7 +51,7 @@ class _StateTransferForms extends State<TransferForms> {
     final int accountNUmber =
         int.tryParse(widget._accountNumber.text.toString());
     if (value != null && accountNUmber != null) {
-      final Transfer finalTransfer = Transfer(value, accountNUmber);
+      final Contact finalTransfer = Contact(value, accountNUmber);
       Navigator.pop(context, finalTransfer);
     }
   }

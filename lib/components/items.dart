@@ -1,18 +1,17 @@
-import 'package:bytebank/models/transfer.dart';
+import 'package:bytebank/models/contact.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class TransferItem extends StatelessWidget {
-  final Transfer _transfer;
+class ContactItem extends StatelessWidget {
+  final Contact _transfer;
 
-  TransferItem(this._transfer);
+  ContactItem(this._transfer);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        leading: Icon(Icons.monetization_on),
-        title: Text(_transfer.value.toString()),
+        title: Text(_transfer.name.toString()),
         subtitle: Text(_transfer.accountNumber.toString()),
       ),
     );
