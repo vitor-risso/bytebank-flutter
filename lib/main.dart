@@ -1,4 +1,3 @@
-import 'package:bytebank/screens/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +19,27 @@ class MyApp extends StatelessWidget {
           textTheme: ButtonTextTheme.primary,
         ),
       ),
-      home: Home(),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text("Dashboard"),
+        ),
+          body: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset('images/bytebank_logo.png'),
+              ),
+              Container(
+                color: Colors.green,
+                child: Column(
+                  children: [
+                    Icon(Icons.people)
+                  ],
+                ),
+              )
+            ],
+          ),
+      ),
     );
   }
 }
