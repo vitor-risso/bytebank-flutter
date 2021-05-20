@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 const _appBarTitle = "Tranferencias";
 
-class Home extends StatefulWidget {
+class Contacts extends StatefulWidget {
   final List<Transfer> _transferList = [];
 
   @override
@@ -16,7 +16,7 @@ class Home extends StatefulWidget {
   }
 }
 
-class StateTransferList extends State<Home> {
+class StateTransferList extends State<Contacts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
