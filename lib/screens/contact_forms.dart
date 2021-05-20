@@ -1,5 +1,6 @@
 import 'package:bytebank/database/app_database.dart';
 import 'package:bytebank/models/contact.dart';
+import 'package:bytebank/screens/contacts_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -72,10 +73,13 @@ class _StateTransferForms extends State<TransferForms> {
   void _createAccount(BuildContext context) {
     final String name = widget._name.text.toString();
     final int accountNUmber =
-        int.tryParse(widget._accountNumber.text.toString());
+    int.tryParse(widget._accountNumber.text.toString());
     if (name != null && accountNUmber != null) {
       final Contact finalContact = Contact(name, accountNUmber);
-      save(finalContact).then((value) => Navigator.pop(context));
+      save(finalContact).then((value) =>
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return ContactsList();
+          })));
     }
   }
 }
