@@ -1,5 +1,5 @@
 class Contact {
-  final double name;
+  final String name;
   final int accountNumber;
 
   Contact(this.name, this.accountNumber);
