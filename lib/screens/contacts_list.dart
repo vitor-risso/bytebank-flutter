@@ -1,6 +1,6 @@
 import 'package:bytebank/components/items.dart';
 import 'package:bytebank/models/contact.dart';
-import 'package:bytebank/screens/transfer_forms.dart';
+import 'package:bytebank/screens/contact_forms.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
