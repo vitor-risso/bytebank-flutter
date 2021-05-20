@@ -6,16 +6,16 @@ import 'package:flutter/material.dart';
 
 const _appBarTitle = "Contacts";
 
-class Contacts extends StatefulWidget {
+class ContactsList extends StatefulWidget {
   final List<Contact> _contactList = [];
 
   @override
   State<StatefulWidget> createState() {
-    return StateTransferList();
+    return StateContactList();
   }
 }
 
-class StateTransferList extends State<Contacts> {
+class StateContactList extends State<ContactsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
