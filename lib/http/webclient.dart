@@ -19,12 +19,14 @@ class LoggingInterceptor implements InterceptorContract {
   }
 }
 
+final Client client =
+    HttpClientWithInterceptor.build(interceptors: [LoggingInterceptor()]);
+
+final String baseUrl = "http://192.168.0.122:8080/transactions";
+
 Future<List<Transaction>> findAll() async {
-  final Client client =
-      HttpClientWithInterceptor.build(interceptors: [LoggingInterceptor()]);
-  final Response response = await client
-      .get(Uri.parse("http://192.168.0.122:8080/transactions"))
-      .timeout(Duration(seconds: 15));
+  final Response response =
+      await client.get(Uri.parse(baseUrl)).timeout(Duration(seconds: 15));
 
   final List<dynamic> jsonList = jsonDecode(response.body);
   final List<Transaction> transactions = [];
@@ -38,4 +40,29 @@ Future<List<Transaction>> findAll() async {
   }
 
   return transactions;
+}
+
+Future<Transaction> save(Transaction transaction) async {
+  final Map<String, dynamic> body = {
+    "value": transaction.value,
+    "contact": {
+      "name": transaction.contact.name,
+      "accountNumber": transaction.contact.accountNumber
+    }
+  };
+
+  final String finalTransaction = jsonEncode(body);
+
+  final Response response = await client.post(
+    Uri.parse(baseUrl),
+    headers: {"Content-Type": "application/json", "password": "1000"},
+    body: finalTransaction,
+  );
+
+  Map<String, dynamic> json = jsonDecode((response.body));
+
+  return Transaction(
+    json['value'],
+    Contact(json['contact']['name'], json['contact']['accountNumber']),
+  );
 }
