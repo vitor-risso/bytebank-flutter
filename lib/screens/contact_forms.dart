@@ -1,5 +1,4 @@
 import 'package:bytebank/database/DAO/contact_dao.dart';
-import 'package:bytebank/database/app_database.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/contacts_list.dart';
 import 'package:flutter/cupertino.dart';
