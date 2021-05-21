@@ -3,6 +3,7 @@ import 'package:bytebank/components/progress.dart';
 import 'package:bytebank/database/DAO/contact_dao.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/screens/contact_forms.dart';
+import 'package:bytebank/screens/transaction_form.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,13 @@ class ContactsList extends StatelessWidget {
                 itemCount: contacts.length,
                 itemBuilder: (context, index) {
                   final contact = contacts[index];
-                  return ContactItem(contact);
+                  return ContactItem(
+                    contact,
+                    onCLick: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => TransactionForm(contact)));
+                    },
+                  );
                 },
               );
               break;
