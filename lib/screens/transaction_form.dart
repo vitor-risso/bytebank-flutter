@@ -67,14 +67,10 @@ class _TransactionFormState extends State<TransactionForm> {
                           Transaction(value, widget.contact);
                       showDialog(
                           context: context,
-                          builder: (context) {
+                          builder: (contextDialog) {
                             return TransactionAuthDialog(
                               onConfirm: (String pwd) {
-                                widget._webClient
-                                    .save(transactionCreated, pwd)
-                                    .then((value) {
-                                  Navigator.pop(context);
-                                });
+                                _save(transactionCreated, pwd, context);
                               },
                             );
                           });
@@ -87,5 +83,14 @@ class _TransactionFormState extends State<TransactionForm> {
         ),
       ),
     );
+  }
+
+  void _save(
+      Transaction transactionCreated, String pwd, BuildContext context) async {
+    widget._webClient.save(transactionCreated, pwd).then((value) {
+      if (value != null) {
+        Navigator.pop(context);
+      }
+    });
   }
 }
