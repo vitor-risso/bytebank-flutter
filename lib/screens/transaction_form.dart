@@ -73,9 +73,7 @@ class _TransactionFormState extends State<TransactionForm> {
                                 widget._webClient
                                     .save(transactionCreated, pwd)
                                     .then((value) {
-                                  if (value != null) {
-                                    Navigator.pop(context);
-                                  }
+                                  Navigator.pop(context);
                                 });
                               },
                             );
