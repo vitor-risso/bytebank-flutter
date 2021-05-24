@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bytebank/components/progress.dart';
 import 'package:bytebank/components/response_dialog.dart';
 import 'package:bytebank/components/transactio_auth.dart';
 import 'package:bytebank/http/webclients/transaction_webclient.dart';
@@ -21,6 +22,7 @@ class TransactionForm extends StatefulWidget {
 class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController _valueController = TextEditingController();
   final String transactionId = Uuid().v4();
+  bool _sending = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,15 @@ class _TransactionFormState extends State<TransactionForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Visibility(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Progress(
+                    msg: "Sending...",
+                  ),
+                ),
+                visible: _sending,
+              ),
               Text(
                 widget.contact.name,
                 style: TextStyle(
@@ -117,12 +128,18 @@ class _TransactionFormState extends State<TransactionForm> {
               "Unknown error",
             );
           });
-    });
+    }).whenComplete(() => setState(() {
+              _sending = false;
+            }));
     return transaction;
   }
 
   void _save(
       Transaction transactionCreated, String pwd, BuildContext context) async {
+    setState(() {
+      _sending = true;
+    });
+
     final Transaction transaction =
         await _send(transactionCreated, pwd, context);
 
