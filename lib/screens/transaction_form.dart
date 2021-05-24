@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:bytebank/components/response_dialog.dart';
 import 'package:bytebank/components/transactio_auth.dart';
 import 'package:bytebank/http/webclients/transaction_webclient.dart';
 import 'package:bytebank/models/contact.dart';
 import 'package:bytebank/models/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class TransactionForm extends StatefulWidget {
   final Contact contact;
@@ -17,6 +20,7 @@ class TransactionForm extends StatefulWidget {
 
 class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController _valueController = TextEditingController();
+  final String transactionId = Uuid().v4();
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +69,7 @@ class _TransactionFormState extends State<TransactionForm> {
                       final double value =
                           double.tryParse(_valueController.text);
                       final transactionCreated =
-                          Transaction(value, widget.contact);
+                          Transaction(transactionId, value, widget.contact);
                       showDialog(
                           context: context,
                           builder: (contextDialog) {
@@ -86,7 +90,7 @@ class _TransactionFormState extends State<TransactionForm> {
     );
   }
 
-  void _save(
+  Future<Transaction> _send(
       Transaction transactionCreated, String pwd, BuildContext context) async {
     final Transaction transaction =
         await widget._webClient.save(transactionCreated, pwd).catchError((e) {
@@ -97,7 +101,30 @@ class _TransactionFormState extends State<TransactionForm> {
               e.message,
             );
           });
-    }, test: (e) => e is Exception);
+    }, test: (e) => e is TimeoutException).catchError((e) {
+      showDialog(
+          context: context,
+          builder: (contextDialog) {
+            return FailureDialog(
+              e.message,
+            );
+          });
+    }, test: (e) => e is HttpException).catchError((e) {
+      showDialog(
+          context: context,
+          builder: (contextDialog) {
+            return FailureDialog(
+              "Unknown error",
+            );
+          });
+    });
+    return transaction;
+  }
+
+  void _save(
+      Transaction transactionCreated, String pwd, BuildContext context) async {
+    final Transaction transaction =
+        await _send(transactionCreated, pwd, context);
 
     if (transaction != null) {
       await showDialog(
