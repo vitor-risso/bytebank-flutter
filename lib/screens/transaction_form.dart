@@ -88,15 +88,8 @@ class _TransactionFormState extends State<TransactionForm> {
 
   void _save(
       Transaction transactionCreated, String pwd, BuildContext context) async {
-    widget._webClient.save(transactionCreated, pwd).then((value) {
-      if (value != null) {
-        showDialog(
-            context: context,
-            builder: (contextDialog) {
-              return SuccessDialog("All right");
-            }).then((value) => Navigator.pop(context));
-      }
-    }).catchError((e) {
+    final Transaction transaction =
+        await widget._webClient.save(transactionCreated, pwd).catchError((e) {
       showDialog(
           context: context,
           builder: (contextDialog) {
@@ -105,5 +98,14 @@ class _TransactionFormState extends State<TransactionForm> {
             );
           });
     }, test: (e) => e is Exception);
+
+    if (transaction != null) {
+      await showDialog(
+          context: context,
+          builder: (contextDialog) {
+            return SuccessDialog("All right");
+          });
+      Navigator.pop(context);
+    }
   }
 }
