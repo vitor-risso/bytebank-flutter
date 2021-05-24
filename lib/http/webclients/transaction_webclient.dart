@@ -22,6 +22,15 @@ class TransactionWebClient {
       headers: {"Content-Type": "application/json", "password": pwd},
       body: finalTransaction,
     );
+
+    if(response.statusCode == 400){
+      throw new Exception("There was an error while submitting transfer");
+    }
+
+    if(response.statusCode == 401){
+      throw new Exception("Authentication failed");
+    }
+
     return Transaction.fromJson(jsonDecode(response.body));
   }
 }
