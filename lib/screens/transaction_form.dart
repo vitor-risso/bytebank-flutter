@@ -12,7 +12,7 @@ import 'package:uuid/uuid.dart';
 class TransactionForm extends StatefulWidget {
   final Contact contact;
   final TransactionWebClient _webClient = TransactionWebClient();
-
+  
   TransactionForm(this.contact);
 
   @override
@@ -22,6 +22,7 @@ class TransactionForm extends StatefulWidget {
 class _TransactionFormState extends State<TransactionForm> {
   final TextEditingController _valueController = TextEditingController();
   final String transactionId = Uuid().v4();
+
   bool _sending = false;
 
   @override
@@ -105,29 +106,12 @@ class _TransactionFormState extends State<TransactionForm> {
       Transaction transactionCreated, String pwd, BuildContext context) async {
     final Transaction transaction =
         await widget._webClient.save(transactionCreated, pwd).catchError((e) {
-      showDialog(
-          context: context,
-          builder: (contextDialog) {
-            return FailureDialog(
-              e.message,
-            );
-          });
+      _showFailureError(context, msg: e.message);
     }, test: (e) => e is TimeoutException).catchError((e) {
-      showDialog(
-          context: context,
-          builder: (contextDialog) {
-            return FailureDialog(
-              e.message,
-            );
-          });
+      _showFailureError(context, msg: e.message);
+      
     }, test: (e) => e is HttpException).catchError((e) {
-      showDialog(
-          context: context,
-          builder: (contextDialog) {
-            return FailureDialog(
-              "Unknown error",
-            );
-          });
+            _showFailureError(context);
     }).whenComplete(() => setState(() {
               _sending = false;
             }));
@@ -152,4 +136,18 @@ class _TransactionFormState extends State<TransactionForm> {
       Navigator.pop(context);
     }
   }
+
+  void _showFailureError(BuildContext context, {String msg = "unkown error"}){
+    final snackBar = SnackBar(content: Text(msg));
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+// showDialog(
+//           context: context,
+//           builder: (contextDialog) {
+//             return FailureDialog(
+//                msg,
+//             );
+//           });
+//   }
+}
 }
